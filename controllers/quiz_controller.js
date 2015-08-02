@@ -56,9 +56,6 @@ exports.new = function(req, res) {
 
 // GET /quizes/create.
 exports.create = function(req, res) {
-  console.log("--------------------------CREATE");
-  console.log("--------------------------CREATE-QUIZ:" + req.body.quiz);
-
   var quiz = models.Quiz.build( req.body.quiz );
 
   //  guarda en BD los campos pregunta y respuesta de Quiz
