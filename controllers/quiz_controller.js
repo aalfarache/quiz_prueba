@@ -21,7 +21,15 @@ exports.load = function(req, res, next, quizId) {
 // GET quizes question.
 var lastSearch = '';  // guarda la última búsqueda realizada
 exports.index = function(req, res) {
-  lastSearch = (req.query.initSearch==='y') ? '' : req.query.search||lastSearch;
+console.log("req.query.initSearch: " + req.query.initSearch);
+console.log("req.query.search: " + req.query.search);
+console.log("lastSearch 1: " + lastSearch);
+  if (req.query.initSearch==='y') {
+    lastSearch = '';
+  }
+console.log("lastSearch 2: " + lastSearch);
+  lastSearch = req.query.search||lastSearch;
+console.log("lastSearch 3: " + lastSearch);
   var search = lastSearch.trim().replace(/ +/g, '%');   // componemos la cadena SQL de bùsquea
 
   models.Quiz.findAll(
