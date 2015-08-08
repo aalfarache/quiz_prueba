@@ -19,16 +19,25 @@ exports.load = function(req, res, next, quizId) {
 };
 
 // GET quizes question.
+var lastSearch = '';  // guarda la última búsqueda realizada
 exports.index = function(req, res) {
-  models.Quiz.findAll().then(
+  lastSearch = (req.query.initSearch==='y') ? '' : req.query.search||lastSearch;
+  var search = lastSearch.trim().replace(/ +/g, '%');   // componemos la cadena SQL de bùsquea
+
+  models.Quiz.findAll(
+    { where: ["pregunta like ? or respuesta like ?", '%'+search+'%', '%'+search+'%'] ,
+      order: ["pregunta"]
+    }
+  ).then(
     function(quizes) {
-      res.render('quizes/index', { quizes: quizes, errors: [] });
+      res.render('quizes/index', { quizes: quizes, search: lastSearch, errors: [] });
     }
   ).catch(
     function(error) {
       next(error);
     }
   );
+
 };
 
 // GET /quizes/:quizId.
