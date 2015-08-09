@@ -1,11 +1,6 @@
 var models = require('../models/models.js');
 
-// GET /quizes/:id/comments/new.
-exports.new = function(req, res) {
-  res.render('comments/new', { quizId: req.params.quizId, errors: [] });
-};
-
-// Autoload :id de comentarios
+// Autoload de comentarios por :commentId
 exports.load = function(req, res, next, commentId) {
   models.Comment.find({
             where: {
@@ -20,14 +15,17 @@ exports.load = function(req, res, next, commentId) {
   ).catch(function(error){next(error)});
 };
 
+// GET /quizes/:id/comments/new.
+exports.new = function(req, res) {
+  res.render('comments/new', { quizId: req.params.quizId, errors: [] });
+};
+
 // POST /quizes/:id/comments/create
 exports.create = function(req, res) {
-console.log("CREATE: 1");
   var comment = models.Comment.build(
       { texto: req.body.comment.texto,
         QuizId: req.params.quizId
         });
-console.log("CREATE: 2");
 
   comment.validate().then(
     function(err){
@@ -41,4 +39,13 @@ console.log("CREATE: 2");
     }
   ).catch(function(error){next(error)});
 
+};
+
+// GET /quizes/:quizId/comments/:commentId/publish
+exports.publish = function(req, res) {
+  req.comment.publicado = true;
+
+  req.comment.save( {fields: ["publicado"]}).then(
+    function(){ res.redirect('/quizes/'+req.params.quizId);}
+  ).catch(function(error){next(error)});
 };
