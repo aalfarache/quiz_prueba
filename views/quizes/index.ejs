@@ -12,6 +12,7 @@
         <%= quizes[i].pregunta %>
       </a>
     </td>
+    <% if (session.user) { %>
     <td>
       <a href="quizes/<%= quizes[i].id %>/edit">
         <button type="button">Editar</button>
@@ -24,11 +25,14 @@
         </button>
       </form>
     </td>
+    <% } %>
   </tr>
 <% } %>
 </table>
 <br/>
 <br/>
+<% if (session.user) { %>
 <a href="/quizes/new">
   <button type="button">Crear pregunta</button>
 </a>
+<% } %>
