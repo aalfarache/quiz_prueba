@@ -30,7 +30,7 @@ exports.create = function(req, res) {
   comment.validate().then(
     function(err){
       if (err) {
-        res.render('comments/new', {comment: comment, errors: err.errors});
+        res.render('comments/new', {quizId: req.params.quizId, comment: comment, errors: err.errors});
       } else {
         comment // save: guarda en DB campo texto de comment
         .save()

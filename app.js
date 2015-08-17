@@ -27,6 +27,25 @@ app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Helpers dinamicos:
+// Auto-load
+app.use(function(req, res, next) {
+  if (req.session.user) {
+    var ahora = (new Date()).getTime();
+    if (!req.session.ultimo) {
+      req.session.ultimo = ahora;
+    }
+    // pongo 12 segundos para facilitar el testeo.
+    if ((ahora - req.session.ultimo) >  12000) {
+      req.session.ultimo = null;
+      delete req.session.user;
+    } else {
+      req.session.ultimo = ahora;
+    }
+  }
+  next();
+});
+
+// Guarda el último path
 app.use(function(req, res, next) {
 
   // guardar path en session.redir para despues de login

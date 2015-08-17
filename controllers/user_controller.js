@@ -1,8 +1,8 @@
 var models = require('../models/models.js');
 
 var users = {
-  admin: {id:1, username:'admin', password:'1'},
-  pepe:  {id:2, username:'pepe', password:'4'}
+  admin: {id:1, username:'admin', password:'admin'},
+  pepe:  {id:2, username:'pepe', password:'pepe'}
 };
 
 // Comprueba si el usuario esta registrado en users
